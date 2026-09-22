@@ -10,10 +10,10 @@ jobs:
       - name: compile and pack
         run: |
           javac -encoding UTF-8 -classpath microemulator-2.0.4.jar -d classes BusRideMIDlet.java
-          mkdir -p classes/META-INF
-          printf 'Manifest-Version: 1.0\nMIDlet-Name: RideTheBus\nMIDlet-Version: 1.0\nMIDlet-Vendor: You\nMIDlet-1: RideTheBus, , BusRideMIDlet\nMicroEdition-Profile: MIDP-2.0\nMicroEdition-Config: CLDC-1.1\n\n' > classes/META-INF/MANIFEST.MF
-          jar cf bus.jar -C classes .
+          printf 'Manifest-Version: 1.0\nMIDlet-Name: RideTheBus\nMIDlet-Version: 1.0\nMIDlet-Vendor: You\nMIDlet-1: RideTheBus, , BusRideMIDlet\nMicroEdition-Profile: MIDP-2.0\nMicroEdition-Config: CLDC-1.1\n\n' > manifest.mf
+          jar cfm bus.jar manifest.mf -C classes .
           jar tf bus.jar
+          unzip -p bus.jar META-INF/MANIFEST.MF
       - uses: actions/upload-artifact@v4
         with:
           name: bus-jar
