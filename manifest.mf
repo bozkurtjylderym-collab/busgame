@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+MIDlet-Name: RideTheBus
+MIDlet-Version: 1.0
+MIDlet-Vendor: You
+MIDlet-1: RideTheBus, , BusRideMIDlet
+MicroEdition-Profile: MIDP-2.0
+MicroEdition-Config: CLDC-1.1
