@@ -12,7 +12,7 @@ public class BusRideMIDlet extends MIDlet implements CommandListener {
     public void destroyApp(boolean u) {}
     void newGame(int count) { pc = count; ni = 0; askName(); }
     void askName() {
-        tb = new TextBox("Имя игрока " + (ni + 1), "Игрок " + (ni + 1), 12, TextField.ANY);
+        tb = new TextBox("Игрок " + (ni + 1), "Игрок " + (ni + 1), 12, TextField.ANY);
         tb.addCommand(ok); tb.setCommandListener(this); display.setCurrent(tb);
     }
     public void commandAction(Command c, Displayable d) {
@@ -35,6 +35,7 @@ class BusCanvas extends Canvas {
     String[] names = new String[4];
     int[] deck = new int[52]; int[] cards = new int[4];
     int[][] z = new int[12][5]; int zn;
+    Graphics pg;
     String msg = "";
 
     BusCanvas(BusRideMIDlet m) { mid = m; }
@@ -116,7 +117,7 @@ class BusCanvas extends Canvas {
     int suitOfKey(int d) { return d == 1 ? 0 : d == 3 ? 1 : d == 7 ? 2 : 3; }
 
     void btn(int x, int y, int w, int h, String label, int key) {
-        Graphics g = getGraphics();
+        Graphics g = pg;
         g.setColor(0x334455); g.fillRoundRect(x, y, w, h, 8, 8);
         g.setColor(0xFFFFFF); g.setFont(Font.getFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_SMALL));
         g.drawString(label, x + w/2, y + h/2, Graphics.HCENTER | Graphics.VCENTER);
@@ -126,7 +127,7 @@ class BusCanvas extends Canvas {
         g.setColor(redC ? 0xCC0000 : 0x111111);
         if (s == 1) { g.fillArc(cx-r, cy-r, r, r, 0, 360); g.fillArc(cx, cy-r, r, r, 0, 360);
             g.fillTriangle(cx-r, cy-r/2, cx+r, cy-r/2, cx, cy+r); }
-        if (s == 2) g.fillTriangle(cx, cy-r, cx+r, cy, cx, cy+r), g.fillTriangle(cx, cy-r, cx-r, cy, cx, cy+r);
+        if (s == 2) { g.fillTriangle(cx, cy-r, cx+r, cy, cx, cy+r); g.fillTriangle(cx, cy-r, cx-r, cy, cx, cy+r); }
         if (s == 0) { g.fillTriangle(cx, cy-r, cx-r, cy, cx+r, cy); g.fillArc(cx-r, cy-r/2, r, r, 0, 360);
             g.fillArc(cx, cy-r/2, r, r, 0, 360); g.fillRect(cx-r/4, cy, r/2, r); }
         if (s == 3) { g.fillArc(cx-r/2, cy-r, r, r, 0, 360); g.fillArc(cx-r, cy-r/2, r, r, 0, 360);
@@ -143,7 +144,7 @@ class BusCanvas extends Canvas {
     }
 
     protected void paint(Graphics g) {
-        zn = 0;
+        zn = 0; pg = g;
         g.setColor(0x0E1A24); g.fillRect(0, 0, getWidth(), getHeight());
         g.setColor(0x7FD4C1); g.setFont(Font.getFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_MEDIUM));
         g.drawString("RIDE THE BUS", 120, 4, Graphics.HCENTER | Graphics.TOP);
@@ -222,4 +223,4 @@ class BusCanvas extends Canvas {
                 btn(60, 230, 120, 40, "МЕНЮ [5]", 5); break; }
         }
     }
-}
+                  }
