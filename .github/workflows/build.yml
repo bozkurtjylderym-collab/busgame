@@ -6,11 +6,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: get j2me api
-        run: curl -O https://repo1.maven.org/maven2/org/microemu/microemulator/2.0.4/microemulator-2.0.4.jar
+        run: curl -f -O https://repo1.maven.org/maven2/org/microemu/microemulator/2.0.4/microemulator-2.0.4.jar
       - name: compile and pack
         run: |
           javac -encoding UTF-8 -classpath microemulator-2.0.4.jar -d classes BusRideMIDlet.java
-          jar cfm manifest.mf bus.jar -C classes .
+          mkdir -p classes/META-INF
+          printf 'Manifest-Version: 1.0\nMIDlet-Name: RideTheBus\nMIDlet-Version: 1.0\nMIDlet-Vendor: You\nMIDlet-1: RideTheBus, , BusRideMIDlet\nMicroEdition-Profile: MIDP-2.0\nMicroEdition-Config: CLDC-1.1\n\n' > classes/META-INF/MANIFEST.MF
+          jar cf bus.jar -C classes .
+          jar tf bus.jar
       - uses: actions/upload-artifact@v4
         with:
           name: bus-jar
