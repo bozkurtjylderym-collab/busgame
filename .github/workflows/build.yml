@@ -1,0 +1,17 @@
+name: build
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: get j2me api
+        run: curl -O https://repo1.maven.org/maven2/org/microemu/microemulator/2.0.4/microemulator-2.0.4.jar
+      - name: compile and pack
+        run: |
+          javac -encoding UTF-8 -classpath microemulator-2.0.4.jar -d classes BusRideMIDlet.java
+          jar cfm manifest.mf bus.jar -C classes .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bus-jar
+          path: bus.jar
