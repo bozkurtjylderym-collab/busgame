@@ -9,10 +9,10 @@ jobs:
         run: curl -f -O https://repo1.maven.org/maven2/org/microemu/microemulator/2.0.4/microemulator-2.0.4.jar
       - name: compile and pack
         run: |
-          javac -encoding UTF-8 -classpath microemulator-2.0.4.jar -d classes BusRideMIDlet.java
+          javac -encoding UTF-8 -source 8 -target 8 -classpath microemulator-2.0.4.jar -d classes BusRideMIDlet.java
+          javap -cp classes -verbose BusRideMIDlet | grep -i major
           printf 'Manifest-Version: 1.0\nMIDlet-Name: RideTheBus\nMIDlet-Version: 1.0\nMIDlet-Vendor: You\nMIDlet-1: RideTheBus, , BusRideMIDlet\nMicroEdition-Profile: MIDP-2.0\nMicroEdition-Config: CLDC-1.1\n\n' > manifest.mf
           jar cfm bus.jar manifest.mf -C classes .
-          jar tf bus.jar
           unzip -p bus.jar META-INF/MANIFEST.MF
       - uses: actions/upload-artifact@v4
         with:
